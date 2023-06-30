@@ -1,7 +1,8 @@
 # srsRAN_4G
 
 ## setup
-![IMG_0294](https://github.com/pchat-imm/srsRAN/assets/40858099/456cec84-b52e-474e-bf88-847b4c76c26c)
+![IMG_0293](https://github.com/pchat-imm/srsRAN/assets/40858099/71fd2ecc-add7-4c4d-bcdf-b728c3c646d9 {width=40px height=400px})
+
 - SDR: BladeRF Micro 2.0
 - 4 LTE Antennas
 - open5GS for core network
@@ -46,5 +47,46 @@ dl_earfcn = 1575
 - time_adv_nsamples = 27
 
 ## Config open5gs
-go to local 'localhost:3000'
+go to local `localhost:3000` to add subscriber with info in user_db.csv
 
+## run code
+### 1. run epc and enb
+```
+>> cd ~/.config/srsran
+>> sudo srsepc epc.conf
+```
+
+and in another window
+```
+>> cd ~/.config/srsran
+>> sudo srsenb enb.conf
+```
+
+then add masq
+'sudo srsepc_if_masq.sh srs_spgw_sgi'
+can check this interface with 'route' command
+
+### 2. set up phone
+- add APN
+```
+setting > mobile network > access point name
+- name = srsapn
+- apn = srsapn
+- mcc = 901
+- mnc = 70
+- mobile virtual network operator type = None
+```
+- select network
+```
+setting > mobile network > network operator > search network
+select one that is standout = Software Radio System RAN
+or
+setting > mobile network > network operator > select network automatic
+```
+![IMG_0300](https://github.com/pchat-imm/srsRAN/assets/40858099/50f94e29-b831-491b-a956-ac484c2ceee6 {width=40px height=400px})
+
+
+make sure apn is correct 
+then check 'setting -> about device -> status -> sim status'
+and it should show connect ip address, mobile network state
+![IMG_0301](https://github.com/pchat-imm/srsRAN/assets/40858099/3df1f8f2-a99b-4d8d-8708-eb3cbb64a9d2 {width=40px height=400px})
