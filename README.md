@@ -1,7 +1,7 @@
 # srsRAN_4G
 
 ## setup
-![IMG_0293](https://github.com/pchat-imm/srsRAN/assets/40858099/71fd2ecc-add7-4c4d-bcdf-b728c3c646d9 {width=40px height=400px})
+<img src = https://github.com/pchat-imm/srsRAN/assets/40858099/71fd2ecc-add7-4c4d-bcdf-b728c3c646d9 width=50% height=50% />
 
 - SDR: BladeRF Micro 2.0
 - 4 LTE Antennas
@@ -10,9 +10,9 @@
 - Sysmocom sim card
 
 ## links to follow
-for setup epc, enb: https://docs.srsran.com/projects/4g/en/latest/app_notes/source/cots_ue
-for add subsciber to open5gs:  https://open5gs.org/open5gs/docs/tutorial/01-your-first-lte/
-for start services of open5gs: https://open5gs.org/open5gs/docs/troubleshoot/01-simple-issues/
+for setup epc, enb: https://docs.srsran.com/projects/4g/en/latest/app_notes/source/cots_ue <br />
+for add subsciber to open5gs:  https://open5gs.org/open5gs/docs/tutorial/01-your-first-lte/ <br />
+for start services of open5gs: https://open5gs.org/open5gs/docs/troubleshoot/01-simple-issues/ <br />
 for doing the project: https://github.com/fllay/LTE/wiki
 
 ## files to edit in srsran: epc.conf, user_db.conf, rr.conf, enb.conf
@@ -80,13 +80,14 @@ setting > mobile network > access point name
 ```
 setting > mobile network > network operator > search network
 select one that is standout = Software Radio System RAN
+```
 or
+```
 setting > mobile network > network operator > select network automatic
 ```
-![IMG_0300](https://github.com/pchat-imm/srsRAN/assets/40858099/50f94e29-b831-491b-a956-ac484c2ceee6 {width=40px height=400px})
+<img src = https://github.com/pchat-imm/srsRAN/assets/40858099/50f94e29-b831-491b-a956-ac484c2ceee6 width=40% height=40% /> <br />
 
-
-make sure apn is correct 
-then check 'setting -> about device -> status -> sim status'
-and it should show connect ip address, mobile network state
-![IMG_0301](https://github.com/pchat-imm/srsRAN/assets/40858099/3df1f8f2-a99b-4d8d-8708-eb3cbb64a9d2 {width=40px height=400px})
+make sure apn is correct <br />
+then check `setting -> about device -> status -> sim status` <br />
+and it should show connect ip address, mobile network state <br />
+<img src = https://github.com/pchat-imm/srsRAN/assets/40858099/3df1f8f2-a99b-4d8d-8708-eb3cbb64a9d2 width=40% height=40% />
