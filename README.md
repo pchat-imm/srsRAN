@@ -87,6 +87,7 @@ password: 1423
 ### 0. start masq
 ```
 >> cd ~/.config/srsran
+>> ifconfig
 >> route
 >> sudo srsepc_if_masq.sh wlp9s0
 srs_spgw_sgi
@@ -110,12 +111,6 @@ and in another window
 >> cd ~/.config/srsran
 >> sudo srsenb enb.conf
 ```
-
-then add masq
-```
-sudo srsepc_if_masq.sh srs_spgw_sgi
-```
-can check this interface with 'route' command
 
 ### 2. set up phone
 - add APN
