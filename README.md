@@ -97,7 +97,9 @@ and in another window
 ```
 
 then add masq
-'sudo srsepc_if_masq.sh srs_spgw_sgi'
+```
+sudo srsepc_if_masq.sh srs_spgw_sgi
+```
 can check this interface with 'route' command
 
 ### 2. set up phone
