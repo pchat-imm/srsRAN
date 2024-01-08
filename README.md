@@ -84,12 +84,27 @@ username: admin
 password: 1423
 
 ## run code
+### 0. start masq
+```
+>> cd ~/.config/srsran
+>> route
+>> sudo srsepc_if_masq.sh wlp9s0
+srs_spgw_sgi
+```
+without the masq ue cannot access internet, also the epc screen won't show `Sending EMM Information`
+check the mask interface using command `route`
+
+
 ### 1. run epc and enb
 ```
 >> cd ~/.config/srsran
 >> sudo srsepc epc.conf
 ```
-
+in case port binding
+```
+netstat -tulpn
+sudo kill <pid>
+```
 and in another window
 ```
 >> cd ~/.config/srsran
@@ -267,4 +282,128 @@ lte    1   48   15   1    0      0    0    0   0% |   n/a   99.9    0    0      
 
 ### 4. UE speedtest
 https://github.com/pchat-imm/srsRAN/assets/40858099/fa045b5b-91ad-4867-8c23-63f9bcb1f2c2
+
+### 5. update epc result
+```
+chatchamon@chatchamon-ThinkPad-L14-Gen-2:~/.config/srsran$ sudo srsepc epc.conf 
+
+Built in Release mode using commit eea87b1d8 on branch master.
+
+
+---  Software Radio Systems EPC  ---
+
+Reading configuration file epc.conf...
+HSS Initialized.
+MME S11 Initialized
+MME GTP-C Initialized
+MME Initialized. MCC: 0xf901, MNC: 0xff70
+SPGW GTP-U Initialized.
+SPGW S11 Initialized.
+SP-GW Initialized.
+Received S1 Setup Request.
+S1 Setup Request - eNB Name: srsenb01, eNB id: 0x19b
+S1 Setup Request - MCC:901, MNC:70
+S1 Setup Request - TAC 7, B-PLMN 0x9f107
+S1 Setup Request - Paging DRX v128
+Sending S1 Setup Response
+Initial UE message: LIBLTE_MME_MSG_TYPE_TRACKING_AREA_UPDATE_REQUEST
+Received Initial UE message -- Tracking Area Update Request
+Tracking Area Update Request -- S-TMSI 0x121c10e9
+Tracking Area Update Request -- eNB UE S1AP Id 1
+Warning: Tracking area update requests are not handled yet.
+Initial UE message: LIBLTE_MME_MSG_TYPE_ATTACH_REQUEST
+Received Initial UE message -- Attach Request
+Attach request -- M-TMSI: 0x121c10e9
+Attach request -- eNB-UE S1AP Id: 2
+Attach request -- Attach type: 2
+Attach Request -- UE Network Capabilities EEA: 11110000
+Attach Request -- UE Network Capabilities EIA: 11110000
+Attach Request -- MS Network Capabilities Present: true
+PDN Connectivity Request -- EPS Bearer Identity requested: 0
+PDN Connectivity Request -- Procedure Transaction Id: 1
+PDN Connectivity Request -- ESM Information Transfer requested: true
+UL NAS: Received Identity Response
+ID Response -- IMSI: 901700000037982
+Downlink NAS: Sent Authentication Request
+UL NAS: Authentication Failure
+Authentication Failure -- Synchronization Failure
+Downlink NAS: Sent Authentication Request
+UL NAS: Received Authentication Response
+Authentication Response -- IMSI 901700000037982
+UE Authentication Accepted.
+Generating KeNB with UL NAS COUNT: 0
+Downlink NAS: Sending NAS Security Mode Command.
+UL NAS: Received Security Mode Complete
+Security Mode Command Complete -- IMSI: 901700000037982
+Sending ESM information request
+UL NAS: Received ESM Information Response
+ESM Info: APN srsapn
+ESM Info: 4 Protocol Configuration Options
+Getting subscription information -- QCI 9
+Sending Create Session Request.
+Creating Session Response -- IMSI: 901700000037982
+Creating Session Response -- MME control TEID: 1
+Received GTP-C PDU. Message type: GTPC_MSG_TYPE_CREATE_SESSION_REQUEST
+SPGW: Allocated Ctrl TEID 1
+SPGW: Allocated User TEID 1
+SPGW: Allocate UE IP 172.16.0.2
+Received Create Session Response
+Create Session Response -- SPGW control TEID 1
+Create Session Response -- SPGW S1-U Address: 127.0.1.100
+SPGW Allocated IP 172.16.0.2 to IMSI 901700000037982
+Adding attach accept to Initial Context Setup Request
+Sent Initial Context Setup Request. E-RAB id 5 
+Received Initial Context Setup Response
+E-RAB Context Setup. E-RAB id 5
+E-RAB Context -- eNB TEID 0x1; eNB GTP-U Address 127.0.1.1
+UL NAS: Received Attach Complete
+Unpacked Attached Complete Message. IMSI 901700000037982
+Unpacked Activate Default EPS Bearer message. EPS Bearer id 5
+Received GTP-C PDU. Message type: GTPC_MSG_TYPE_MODIFY_BEARER_REQUEST
+Sending EMM Information
+Received UE Context Release Request. MME-UE S1AP Id 1
+No UE context to release found. MME-UE S1AP Id: 1
+Received UE Context Release Request. MME-UE S1AP Id 2
+There are active E-RABs, send release access bearers request
+Received GTP-C PDU. Message type: GTPC_MSG_TYPE_RELEASE_ACCESS_BEARERS_REQUEST
+Received UE Context Release Complete. MME-UE S1AP Id 2
+UE Context Release Completed.
+Initial UE message: NAS Message Type Unknown
+Received Initial UE message -- Service Request
+Service request -- S-TMSI 0xf973b6cb
+Service request -- eNB UE S1AP Id 3
+Service Request -- Short MAC valid
+Service Request -- User is ECM DISCONNECTED
+UE previously assigned IP: 172.16.0.2
+Generating KeNB with UL NAS COUNT: 3
+UE Ctr TEID 0
+Sent Initial Context Setup Request. E-RAB id 5 
+Received Initial Context Setup Response
+E-RAB Context Setup. E-RAB id 5
+E-RAB Context -- eNB TEID 0x2; eNB GTP-U Address 127.0.1.1
+Initial Context Setup Response triggered from Service Request.
+Sending Modify Bearer Request.
+Received GTP-C PDU. Message type: GTPC_MSG_TYPE_MODIFY_BEARER_REQUEST
+Received UE Context Release Request. MME-UE S1AP Id 3
+There are active E-RABs, send release access bearers request
+Received GTP-C PDU. Message type: GTPC_MSG_TYPE_RELEASE_ACCESS_BEARERS_REQUEST
+Received UE Context Release Complete. MME-UE S1AP Id 3
+UE Context Release Completed.
+Initial UE message: NAS Message Type Unknown
+Received Initial UE message -- Service Request
+Service request -- S-TMSI 0xf973b6cb
+Service request -- eNB UE S1AP Id 4
+Service Request -- Short MAC valid
+Service Request -- User is ECM DISCONNECTED
+UE previously assigned IP: 172.16.0.2
+Generating KeNB with UL NAS COUNT: 4
+UE Ctr TEID 0
+Sent Initial Context Setup Request. E-RAB id 5 
+Received Initial Context Setup Response
+E-RAB Context Setup. E-RAB id 5
+E-RAB Context -- eNB TEID 0x3; eNB GTP-U Address 127.0.1.1
+Initial Context Setup Response triggered from Service Request.
+Sending Modify Bearer Request.
+Received GTP-C PDU. Message type: GTPC_MSG_TYPE_MODIFY_BEARER_REQUEST
+```
 
