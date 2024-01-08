@@ -1,5 +1,9 @@
 # srsRAN_4G
 
+090124
+- install open5gs https://open5gs.org/open5gs/docs/tutorial/01-your-first-lte/
+- git push all files
+
 ## setup
 <img src = https://github.com/pchat-imm/srsRAN/assets/40858099/71fd2ecc-add7-4c4d-bcdf-b728c3c646d9 width=50% height=50% />
 
