@@ -15,25 +15,57 @@ for add subsciber to open5gs:  https://open5gs.org/open5gs/docs/tutorial/01-your
 for start services of open5gs: https://open5gs.org/open5gs/docs/troubleshoot/01-simple-issues/ <br />
 for doing the project: https://github.com/fllay/LTE/wiki
 
+### 1. install blade RF 
+follow link: https://github.com/Nuand/bladeRF
+```
+git clone https://github.com/Nuand/bladeRF.git
+mkdir -p build
+cd build
+cmake [options] ../
+make
+sudo make install
+sudo ldconfig
+```
+### 2. install srsRAN_4G
+if you already install srsRAN_4G but haven't installed bladeRF, you will have to install from source again.
+
+install pre-processor
+```
+sudo apt-get install build-essential cmake libfftw3-dev libmbedtls-dev libboost-program-options-dev libconfig++-dev libsctp-dev
+```
+then install srsRAN_4G (make test not really required)
+```
+git clone https://github.com/srsRAN/srsRAN_4G.git
+cd srsRAN_4G
+mkdir build
+cd build
+cmake ../
+make
+make test
+
+sudo make install
+srsran_install_configs.sh user
+```
+## 3. edit files
 ## files to edit in srsran: epc.conf, user_db.conf, rr.conf, enb.conf
-### 1. epc.conf
+### 3.1. epc.conf
 change
 - mcc = 901
 - mnc = 70 (follow the number of the SIM)
 - apn = srsapn
 
-### 2. user_db.csv
+### 3.2. user_db.csv
 ue3,mil,901700000037982,6c03137e507414d32a49ade8ff4aa820,opc,1562d329051a61f4a898fde234507670,9000,000000000000,9,dynamic
 
 | IMSI  | ICCID | ACC  | PIN1 | PUK1  | PIN2 | PUK2  | Ki | OPC |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 | 901700000037982  | 8988211000000379829  | 0004  | 8276  | 91676454  | 1098  | 34819185  | 6C03137E507414D32A49ADE8FF4AA820 | 1562D329051A61F4A898FDE234507670 |
 
-### 3. rr.conf
+### 3.3. rr.conf
 [cell_list]
 dl_earfcn = 1575
 
-### enb.conf
+### 3.4. enb.conf
 [enb]
 - mcc = 901
 - mnc = 70
@@ -48,6 +80,8 @@ dl_earfcn = 1575
 
 ## Config open5gs
 go to local `localhost:3000` to add subscriber with info in user_db.csv
+username: admin
+password: 1423
 
 ## run code
 ### 1. run epc and enb
