@@ -83,9 +83,13 @@ dl_earfcn = 1575
 - time_adv_nsamples = 27
 
 ## Config open5gs
-go to local `localhost:3000` to add subscriber with info in user_db.csv
-username: admin
-password: 1423
+go to local `localhost:3000` to add subscriber with info in user_db.csv /
+username: admin /
+password: 1423 /
+at 09/01/23, the webui change to `localhost:9999` /
+also don't forget to start open5gs service
+
+
 
 ## run code
 ### 0. start masq
