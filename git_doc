@@ -1,0 +1,10 @@
+git pull
+git config pull.rebase false # merge
+git add .
+git commit
+git push origin main
+
+cd <submodule folder>
+git submodule init
+git submodule update
+
