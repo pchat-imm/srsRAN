@@ -4,7 +4,7 @@
 - install open5gs https://open5gs.org/open5gs/docs/tutorial/01-your-first-lte/
 - git push all files
 
-## setup
+### setup
 <img src = https://github.com/pchat-imm/srsRAN/assets/40858099/71fd2ecc-add7-4c4d-bcdf-b728c3c646d9 width=50% height=50% />
 
 - SDR: BladeRF Micro 2.0
@@ -13,8 +13,8 @@
 - Samsung galaxy j7 as UE
 - Sysmocom sim card
 
-## links to follow
-for setup epc, enb: https://docs.srsran.com/projects/4g/en/latest/app_notes/source/cots_ue <br />
+### links to follow
+for setup epc, enb: https://docs.srsran.com/projects/4g/en/latest/app_notes/source/cots_ue/source/index.html <br />
 for add subsciber to open5gs:  https://open5gs.org/open5gs/docs/tutorial/01-your-first-lte/ <br />
 for start services of open5gs: https://open5gs.org/open5gs/docs/troubleshoot/01-simple-issues/ <br />
 for doing the project: https://github.com/fllay/LTE/wiki
@@ -50,8 +50,8 @@ make test
 sudo make install
 srsran_install_configs.sh user
 ```
-## 3. edit files
-## files to edit in srsran: epc.conf, user_db.conf, rr.conf, enb.conf
+### 3. edit files
+#### files to edit in srsran: epc.conf, user_db.conf, rr.conf, enb.conf
 ### 3.1. epc.conf
 change
 - mcc = 901
@@ -82,14 +82,70 @@ dl_earfcn = 1575
 - device_name = bladeRF
 - time_adv_nsamples = 27
 
-## Config open5gs
+### 4. Config open5gs
+#### 4.1 install open5gs package
+```
+# Install the MongoDB Packages
+$ curl -fsSL https://pgp.mongodb.com/server-6.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg --dearmor
+$ echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+$ sudo apt update
+$ sudo apt install mongodb-org
+
+# Installing Open5GS
+$ sudo add-apt-repository ppa:open5gs/latest
+$ sudo apt update
+$ sudo apt install open5gs
+```
+install webui
+```
+# Download and import the Nodesource GPG key
+$ sudo apt update
+$ sudo apt install -y ca-certificates curl gnupg
+$ sudo mkdir -p /etc/apt/keyrings
+$ curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+
+# Create deb repository
+$ NODE_MAJOR=20
+$ echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+
+# Run Update and Install
+$ sudo apt update
+$ sudo apt install nodejs -y
+
+# Install the WebUI of Open5GS
+$ curl -fsSL https://open5gs.org/open5gs/assets/webui/install | sudo -E bash -
+```
+
+#### 4.2 configure open5GS 
 go to local `localhost:3000` to add subscriber with info in user_db.csv /
 username: admin /
 password: 1423 /
 at 09/01/23, the webui change to `localhost:9999` /
-also don't forget to start open5gs service
+enable NAT rule
+```
+### Enable IPv4/IPv6 Forwarding
+$ sudo sysctl -w net.ipv4.ip_forward=1
+$ sudo sysctl -w net.ipv6.conf.all.forwarding=1
 
+### Add NAT Rule
+$ sudo iptables -t nat -A POSTROUTING -s 10.45.0.0/16 ! -o ogstun -j MASQUERADE
+```
+configure firewall correctly
+```
+$ sudo ufw status
+Status: active
+$ sudo ufw disable
+Firewall stopped and disabled on system startup
+$ sudo ufw status
+Status: inactive
+```
 
+also don't forget to start open5gs service /
+check if open5gs started or not
+```
+>> sudo netstat -tupln
+```
+if not, follow the link: https://open5gs.org/open5gs/docs/troubleshoot/01-simple-issues/
 
 ## run code
 ### 0. start masq
@@ -257,30 +313,19 @@ User 0x49 connected
 ```
 ### 3. ENB trace mode
 ```
-               -----------------DL----------------|-------------------------UL-------------------------
+              -----------------DL----------------|-------------------------UL-------------------------
 rat  pci rnti  cqi  ri  mcs  brate   ok  nok  (%) | pusch  pucch  phr  mcs  brate   ok  nok  (%)    bsr
-lte    1   47  n/a   0    0      0    0    0   0% |   n/a    n/a    0    0      0    0    0   0%    0.0
-lte    1   48   15   1   20   308k   57    0   0% |  23.2   18.0   40   22   635k  118    0   0%    0.0
-lte    1   47  n/a   0    0      0    0    0   0% |   n/a    n/a    0    0      0    0    0   0%    0.0
-lte    1   48   15   1   20    99k   15    0   0% |  17.6   15.3   40   17   114k   32    0   0%    0.0
-lte    1   47    4   0    0      0    0    3 100% |   n/a    2.0    0    0      0    0    0   0%    0.0
-lte    1   48   15   1    5    599    3    0   0% |  17.2   15.7   40   17   8.3k    2    0   0%    0.0
-lte    1   47  n/a   0    0      0    0    0   0% |   n/a    n/a    0    0      0    0    0   0%    0.0
-lte    1   48   15   1    1    112    2    0   0% |  22.5   20.3   40   20   8.5k    2    0   0%    0.0
-lte    1   47  n/a   0    0      0    0    0   0% |   n/a    n/a    0    0      0    0    0   0%    0.0
-lte    1   48   15   1    0      0    0    0   0% |   n/a   99.9    0    0      0    0    0   0%    0.0
-lte    1   47   11   0    0      0    0    3 100% |   n/a   -0.1    0    0      0    0    0   0%    0.0
-lte    1   48   15   1    0      0    0    0   0% |   n/a   99.9    0    0      0    0    0   0%    0.0
-lte    1   47  n/a   0    0      0    0    0   0% |   n/a    n/a    0    0      0    0    0   0%    0.0
-lte    1   48   15   1    0      0    0    0   0% |   n/a   99.9    0    0      0    0    0   0%    0.0
-lte    1   47    9   0    0      0    0    3 100% |   n/a    1.6    0    0      0    0    0   0%    0.0
-lte    1   48   15   1    9    13k   15    0   0% |  20.8   19.5   40   20    51k   15    0   0%    0.0
-lte    1   47   14   0    0      0    0    3 100% |   n/a   -1.8    0    0      0    0    0   0%    0.0
-lte    1   48   15   1    8   7.2k   11    0   0% |  20.3   18.0   40   19    36k   10    0   0%    0.0
-lte    1   47  n/a   0    0      0    0    0   0% |   n/a    n/a    0    0      0    0    0   0%    0.0
-lte    1   48   15   1   19    59k   10    0   0% |  21.3   18.0   40   20    13k    3    0   0%    0.0
-lte    1   47  n/a   0    0      0    0    0   0% |   n/a    n/a    0    0      0    0    0   0%    0.0
-lte    1   48   15   1    0      0    0    0   0% |   n/a   99.9    0    0      0    0    0   0%    0.0
+lte    1   47   15   1   12    62k   22    0   0% |  17.2   12.5   40   17   141k   40    0   0%    0.0
+lte    1   47   15   1   14    45k   17    0   0% |  17.5   13.1   40   17   103k   25    0   0%    0.0
+lte    1   47   15   1   18   292k   51    0   0% |  17.3   12.4   40   17   313k   81    0   0%    0.0
+lte    1   47   15   1   27    10M  951    0   0% |  15.3   11.7   40   15   765k  283    0   0%    0.0
+lte    1   47   15   1   27    11M 1000    0   0% |  15.7   12.5   40   16   661k  245    0   0%    0.0
+lte    1   47   15   1   27    11M 1000    0   0% |  16.7   14.0   40   16   488k  198    0   0%    0.0
+lte    1   47   15   1   27    11M 1000    0   0% |  17.9   15.0   40   17   447k  195    0   0%    0.0
+lte    1   47   15   1   27    11M 1000    0   0% |  18.4   14.8   40   17   343k  164    0   0%    0.0
+lte    1   47   15   1   27    11M 1000    0   0% |  18.7   14.9   40   17   349k  190    0   0%    0.0
+lte    1   47   15   1   27    11M 1000    0   0% |  18.6   15.3   40   18   453k  183    0   0%    0.0
+lte    1   47   15   1   27    11M 1000    0   0% |  18.6   14.6   40   18   489k  178    0   0%    0.0
 ```
 
 ### 4. UE speedtest
