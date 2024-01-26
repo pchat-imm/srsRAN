@@ -2,22 +2,28 @@
 
 090124
 - install open5gs https://open5gs.org/open5gs/docs/tutorial/01-your-first-lte/
-- git push all files
+
 
 ### setup
-<img src = https://github.com/pchat-imm/srsRAN/assets/40858099/71fd2ecc-add7-4c4d-bcdf-b728c3c646d9 width=50% height=50% />
+<p float="left">
+<img src = https://github.com/pchat-imm/srsRAN/assets/40858099/71fd2ecc-add7-4c4d-bcdf-b728c3c646d9 width=48% height=48% />
+<img src = https://github.com/pchat-imm/srsRAN/assets/40858099/47c2c7a8-8f1b-46b8-a866-d768e35d70a0 width=48% height=48% />
+</p>
 
 - SDR: BladeRF Micro 2.0
 - 4 LTE Antennas
 - open5GS for core network
 - Samsung galaxy j7 as UE
 - Sysmocom sim card
+- Quectel RM510G-QL + sysmocom for UE (26/01/24)
 
 ### links to follow
-for setup epc, enb: https://docs.srsran.com/projects/4g/en/latest/app_notes/source/cots_ue/source/index.html <br />
-for add subsciber to open5gs:  https://open5gs.org/open5gs/docs/tutorial/01-your-first-lte/ <br />
-for start services of open5gs: https://open5gs.org/open5gs/docs/troubleshoot/01-simple-issues/ <br />
-for doing the project: https://github.com/fllay/LTE/wiki
+- for setup epc, enb: https://docs.srsran.com/projects/4g/en/latest/app_notes/source/cots_ue/source/index.html <br />
+- for add subsciber to open5gs:  https://open5gs.org/open5gs/docs/tutorial/01-your-first-lte/ <br />
+- for start services of open5gs: https://open5gs.org/open5gs/docs/troubleshoot/01-simple-issues/ <br />
+- for doing the project: https://github.com/fllay/LTE/wiki <br />
+- for configure quectel: https://github.com/pchat-imm/quectel_rm510q_gl.git <br />
+note that current quectel that I ping can only send short traffic, worse than using mobile phone
 
 ### 1. install blade RF 
 follow link: https://github.com/Nuand/bladeRF
@@ -201,6 +207,26 @@ make sure apn is correct <br />
 then check `setting -> about device -> status -> sim status` <br />
 and it should show connect ip address, mobile network state <br />
 <img src = https://github.com/pchat-imm/srsRAN/assets/40858099/3df1f8f2-a99b-4d8d-8708-eb3cbb64a9d2 width=40% height=40% />
+
+### 3. run quectel
+```
+>> lsusb
+>> sudo qmicli --device=/dev/cdc-wdm0 --dms-get-operating-mode 
+>> sudo qmicli -p -d /dev/cdc-wdm0 --device-open-net='net-raw-ip|net-no-qos-header' --wds-start-network="apn='srsapn'" --client-no-release-cid 
+>> sudo udhcpc -q -f -i wlp9s0
+>> ifconfig wlp9s0
+>> ping -I wwan0 -c 5 8.8.8.8
+```
+run AT command to ping to the gNB
+```
+>> sudo minicom -s
+at
+at+cops
+at+qnwprefcfg = "lte_band"
+at+qnwprefcfg = "mode_pref"
+at+qnwprefcfg = "mode_pref", LTE
+AT+QPING=1,"8.8.8.8"      
+```
 
 ## pice of successful result
 ### 1. EPC
